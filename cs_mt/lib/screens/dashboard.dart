@@ -43,7 +43,7 @@ class _DashboardState extends State<Dashboard> {
       body: Consumer<ImageHitProvider>(
           builder: (context,imageModel,child) {
             List<Hit> hits = imageModel.mainHit;
-            var distinctIds = [...{...hits}];
+            var distinctHits = [...{...hits}];
             return Column(
               children: [
                 Padding(
@@ -122,12 +122,12 @@ class _DashboardState extends State<Dashboard> {
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
-                          itemCount: distinctIds.length,
+                          itemCount: distinctHits.length,
                           itemBuilder: (context,index){
                             return GestureDetector(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageViewFullScreen(image: hits[index].largeImageUrl,))),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageViewFullScreen(image: distinctHits[index].largeImageUrl,))),
                               child: CachedNetworkImage(
-                                imageUrl:distinctIds[index].previewUrl,
+                                imageUrl:distinctHits[index].previewUrl,
                                 fit: BoxFit.cover,
                                 placeholder: (context,url){
                                   return  Center(child: CircularProgressIndicator(
