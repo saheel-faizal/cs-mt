@@ -74,7 +74,6 @@ class _DashboardState extends State<Dashboard> {
                         }
                         page = 1;
                         imageModel.clearList();
-                        Future.delayed(const Duration(seconds: 2));
                         imageModel.getImages(keyword, page,imageType);
                       },
                       onFieldSubmitted: (value){
