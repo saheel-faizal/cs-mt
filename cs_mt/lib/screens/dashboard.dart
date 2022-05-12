@@ -42,109 +42,122 @@ class _DashboardState extends State<Dashboard> {
         title:  Text("Dashboard",style: TextStyle(color: kBlueGrey900),),),
       body: Consumer<ImageHitProvider>(
           builder: (context,imageModel,child) {
-            List<Hit> hits = imageModel.mainHit;
-            var distinctHits = [...{...hits}];
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration:  BoxDecoration(
-                      color: kWhite,
-                      boxShadow: [
-                        BoxShadow(color: kGrey,offset: Offset.fromDirection(45))
-                      ],
+            if(imageModel.mainHit.isNotEmpty){
+              List<Hit> hits = imageModel.mainHit;
+              var distinctHits = [...{...hits}];
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration:  BoxDecoration(
+                        color: kWhite,
+                        boxShadow: [
+                          BoxShadow(color: kGrey,offset: Offset.fromDirection(45))
+                        ],
 
 
-                    ),
-                    child: TextFormField(
-                      onChanged: (value){
+                      ),
+                      child: TextFormField(
+                        onChanged: (value){
 
-                        keyword = value;
-                        if(keyword.contains("illustration")){
-                          imageType = "illustration";
-                        }
-                        else if(keyword.contains("vector")){
-                          imageType = "vector";
-                        }
-                        else if(keyword.contains("photo")){
-                          imageType = "photo";
-                        }else{
-                          imageType = "";
-                        }
-                        page = 1;
-                        imageModel.clearList();
-                        imageModel.getImages(keyword, page,imageType);
-                      },
-                      onFieldSubmitted: (value){
+                          keyword = value;
+                          if(keyword.contains("illustration")){
+                            imageType = "illustration";
+                          }
+                          else if(keyword.contains("vector")){
+                            imageType = "vector";
+                          }
+                          else if(keyword.contains("photo")){
+                            imageType = "photo";
+                          }else{
+                            imageType = "";
+                          }
+                          page = 1;
+                          imageModel.clearList();
+                          imageModel.getImages(keyword, page,imageType);
+                        },
+                        onFieldSubmitted: (value){
 
-                        if(keyword.contains("illustration")){
-                          imageType = "illustration";
-                        }
-                        else if(keyword.contains("vector")){
-                          imageType = "vector";
-                        }
-                        else if(keyword.contains("photo")){
-                          imageType = "photo";
-                        }else{
-                          imageType = "";
-                        }
-                        keyword = value;
-                        page = 1;
-                        imageModel.clearList();
-                        imageModel.getImages(keyword, page,imageType);
-                      },
-                      decoration:  const InputDecoration(
-                          contentPadding: EdgeInsets.all(15),
-                          fillColor: kWhite,
-                          focusColor: kWhite,
-                          hintText: "    Enter you keyword",
-                          border: InputBorder.none
+                          if(keyword.contains("illustration")){
+                            imageType = "illustration";
+                          }
+                          else if(keyword.contains("vector")){
+                            imageType = "vector";
+                          }
+                          else if(keyword.contains("photo")){
+                            imageType = "photo";
+                          }else{
+                            imageType = "";
+                          }
+                          keyword = value;
+                          page = 1;
+                          imageModel.clearList();
+                          imageModel.getImages(keyword, page,imageType);
+                        },
+                        decoration:  const InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            fillColor: kWhite,
+                            focusColor: kWhite,
+                            hintText: "    Enter you keyword",
+                            border: InputBorder.none
 
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                LazyLoadScrollView(
-                  isLoading:isLoadingVertical,
-                  onEndOfPage: () async{
-                    page++;
-                    imageModel.getImages(keyword, page,imageType);
-                  },
-                  child: Expanded(
-                    child: Scrollbar(
-                      thickness: 10,
-                      child: GridView.builder(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                          itemCount: distinctHits.length,
-                          itemBuilder: (context,index){
-                            return GestureDetector(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageViewFullScreen(image: distinctHits[index].largeImageUrl,))),
-                              child: CachedNetworkImage(
-                                imageUrl:distinctHits[index].previewUrl,
-                                fit: BoxFit.cover,
-                                placeholder: (context,url){
-                                  return  Center(child: CircularProgressIndicator(
-                                    color: kBlueGrey,
-                                    backgroundColor: kGrey300,),);
-                                },
-                                errorWidget: (context,url , error){
-                                  return Container();
-                                },
-                              ),
-                            );
+                  LazyLoadScrollView(
+                    isLoading:isLoadingVertical,
+                    onEndOfPage: () async{
+                      page++;
+                      imageModel.getImages(keyword, page,imageType);
+                    },
+                    child: Expanded(
+                      child: Scrollbar(
+                        thickness: 10,
+                        child: GridView.builder(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            itemCount: distinctHits.length,
+                            itemBuilder: (context,index){
+                              return GestureDetector(
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageViewFullScreen(image: distinctHits[index].largeImageUrl,))),
+                                child: CachedNetworkImage(
+                                  imageUrl:distinctHits[index].previewUrl,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context,url){
+                                    return  Center(child: CircularProgressIndicator(
+                                      color: kBlueGrey,
+                                      backgroundColor: kGrey300,),);
+                                  },
+                                  errorWidget: (context,url , error){
+                                    return Container();
+                                  },
+                                ),
+                              );
 
-                          }),
+                            }),
+                      ),
                     ),
-                  ),
-                )
-              ],
-            );
+                  )
+                ],
+              );
+
+            }else if(imageModel.mainHit.isEmpty){
+              const Center(child: Text("No results found"),);
+            }else{
+              return Center(
+                child: CircularProgressIndicator(
+                  color: kBlueGrey,
+                  backgroundColor: kGrey300,
+                ),
+              )
+            }
+
           }
       ),
     );
