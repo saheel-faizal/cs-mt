@@ -34,120 +34,119 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: kBlueGrey50,
       appBar: AppBar(
         elevation: 0.01,
         backgroundColor: kWhite,
         centerTitle: true,
-        title:  Text("Dashboard",style: TextStyle(color: Colors.blueGrey[900]),),),
+        title:  Text("Dashboard",style: TextStyle(color: kBlueGrey900),),),
       body: Consumer<ImageHitProvider>(
-        builder: (context,imageModel,child) {
-          List<Hit> hits = imageModel.mainHit;
-          var distinctIds = [...{...hits}];
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration:  BoxDecoration(
-                    color: kWhite,
-                    boxShadow: [
-                      BoxShadow(color: Colors.grey,offset: Offset.fromDirection(45))
-                    ],
+          builder: (context,imageModel,child) {
+            List<Hit> hits = imageModel.mainHit;
+            var distinctIds = [...{...hits}];
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration:  BoxDecoration(
+                      color: kWhite,
+                      boxShadow: [
+                        BoxShadow(color: kGrey,offset: Offset.fromDirection(45))
+                      ],
 
 
-                  ),
-                  child: TextFormField(
-                    onChanged: (value){
+                    ),
+                    child: TextFormField(
+                      onChanged: (value){
 
-                      keyword = value;
-                      if(keyword.contains("illustration")){
-                        imageType = "illustration";
-                      }
-                      else if(keyword.contains("vector")){
-                        imageType = "vector";
-                      }
-                      else if(keyword.contains("photo")){
-                        imageType = "photo";
-                      }else{
-                        imageType = "";
-                      }
-                      page = 1;
-                      imageModel.clearList();
-                      Future.delayed(const Duration(seconds: 2));
-                      imageModel.getImages(keyword, page,imageType);
-                    },
-                    // onFieldSubmitted: (value){
-                    //
-                    //   if(keyword.contains("illustration")){
-                    //     imageType = "illustration";
-                    //   }
-                    //   else if(keyword.contains("vector")){
-                    //     imageType = "vector";
-                    //   }
-                    //   else if(keyword.contains("photo")){
-                    //     imageType = "photo";
-                    //   }else{
-                    //     imageType = "";
-                    //   }
-                    //   keyword = value;
-                    //   page = 1;
-                    //   imageModel.clearList();
-                    //
-                    //   imageModel.getImages(keyword, page,imageType);
-                    // },
-                    decoration:  const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      fillColor: kWhite,
-                      focusColor: kWhite,
-                      hintText: "    Enter you keyword",
-                      border: InputBorder.none
+                        keyword = value;
+                        if(keyword.contains("illustration")){
+                          imageType = "illustration";
+                        }
+                        else if(keyword.contains("vector")){
+                          imageType = "vector";
+                        }
+                        else if(keyword.contains("photo")){
+                          imageType = "photo";
+                        }else{
+                          imageType = "";
+                        }
+                        page = 1;
+                        imageModel.clearList();
+                        Future.delayed(const Duration(seconds: 2));
+                        imageModel.getImages(keyword, page,imageType);
+                      },
+                      onFieldSubmitted: (value){
 
+                        if(keyword.contains("illustration")){
+                          imageType = "illustration";
+                        }
+                        else if(keyword.contains("vector")){
+                          imageType = "vector";
+                        }
+                        else if(keyword.contains("photo")){
+                          imageType = "photo";
+                        }else{
+                          imageType = "";
+                        }
+                        keyword = value;
+                        page = 1;
+                        imageModel.clearList();
+                        imageModel.getImages(keyword, page,imageType);
+                      },
+                      decoration:  const InputDecoration(
+                          contentPadding: EdgeInsets.all(15),
+                          fillColor: kWhite,
+                          focusColor: kWhite,
+                          hintText: "    Enter you keyword",
+                          border: InputBorder.none
+
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-                  LazyLoadScrollView(
-                    isLoading:isLoadingVertical,
-                    onEndOfPage: () async{
-                      page++;
-                      imageModel.getImages(keyword, page,imageType);
-                    },
-                    child: Expanded(
-                      child: Scrollbar(
-                        thickness: 10,
-                        child: GridView.builder(
+                LazyLoadScrollView(
+                  isLoading:isLoadingVertical,
+                  onEndOfPage: () async{
+                    page++;
+                    imageModel.getImages(keyword, page,imageType);
+                  },
+                  child: Expanded(
+                    child: Scrollbar(
+                      thickness: 10,
+                      child: GridView.builder(
                           physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                           ),
                           itemCount: distinctIds.length,
-                            itemBuilder: (context,index){
+                          itemBuilder: (context,index){
                             return GestureDetector(
                               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> ImageViewFullScreen(image: hits[index].largeImageUrl,))),
                               child: CachedNetworkImage(
-                                  imageUrl:distinctIds[index].previewUrl,
+                                imageUrl:distinctIds[index].previewUrl,
                                 fit: BoxFit.cover,
                                 placeholder: (context,url){
-                                    return  Center(child: CircularProgressIndicator(
-                                      color: Colors.blueGrey,
-                                      backgroundColor: Colors.grey[300],),);
+                                  return  Center(child: CircularProgressIndicator(
+                                    color: kBlueGrey,
+                                    backgroundColor: kGrey300,),);
                                 },
                                 errorWidget: (context,url , error){
-                                    return Container();
+                                  return Container();
                                 },
                               ),
                             );
 
-                        }),
-                      ),
+                          }),
                     ),
-                  )
-            ],
-          );
-        }
+                  ),
+                )
+              ],
+            );
+          }
       ),
     );
   }
