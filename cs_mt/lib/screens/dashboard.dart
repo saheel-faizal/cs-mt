@@ -117,7 +117,7 @@ class _DashboardState extends State<Dashboard> {
                       child: Scrollbar(
                         thickness: 10,
                         child: GridView.builder(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
@@ -147,15 +147,9 @@ class _DashboardState extends State<Dashboard> {
                 ],
               );
 
-            }else if(imageModel.mainHit.isEmpty){
-              const Center(child: Text("No results found"),);
-            }else{
-              return Center(
-                child: CircularProgressIndicator(
-                  color: kBlueGrey,
-                  backgroundColor: kGrey300,
-                ),
-              )
+            }else {
+              return const Center(child: Text("..."),);
+
             }
 
           }

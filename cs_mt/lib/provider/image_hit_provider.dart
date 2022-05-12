@@ -6,7 +6,7 @@ class ImageHitProvider extends ChangeNotifier{
   late ImageHitsModel imageHitsModel = ImageHitsModel(total: 0, totalHits: 0, hits: []);
   late WebService webService=WebService();
   List<Hit> mainHit=[];
-  bool isLoading = false;
+  bool isLoading = true;
 
   Future getImages(String keyword,int page,String imageType) async{
     print("..."+imageType.toString());
