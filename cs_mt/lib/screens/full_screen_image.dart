@@ -16,7 +16,9 @@ class ImageViewFullScreen extends StatelessWidget {
           builder: (BuildContext context, int index) {
             return PhotoViewGalleryPageOptions(
               imageProvider: NetworkImage(image),
-              initialScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.contained * 1.3,
+              minScale: PhotoViewComputedScale.contained * 0.45,
+              initialScale: PhotoViewComputedScale.contained * 1,
               heroAttributes: PhotoViewHeroAttributes(tag: image),
             );
           },
